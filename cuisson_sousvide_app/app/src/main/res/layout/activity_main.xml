@@ -5,31 +5,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#dfe"
+    android:background="#fff"
     tools:context=".MainActivity">
 
-    <TextView
-        android:text="@string/main"
-        android:textSize="30sp"
-        android:layout_margin="10dp"
+    <Button
+        android:id="@+id/clear_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="#ffff4444"
+        android:text="@string/clear"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.059"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"/>
+        app:layout_constraintVertical_bias="0.48000002" />
 
     <Button
-        android:id="@+id/send_button"
-        android:text="@string/move"
-        android:textSize="30sp"
-        android:layout_margin="20dp"
+        android:id="@+id/connect_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginStart="8dp"
+        android:background="#ff4444ff"
+        android:text="@string/connection"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/clear_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.48000002" />
+
+    <EditText
+        android:id="@+id/device_address"
+        android:layout_width="wrap_content"
+        android:layout_height="49dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Your device address"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.24000001" />
 
 </android.support.constraint.ConstraintLayout>
