@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">cuisson_sous-vide_app</string>
+    <string name="app_name">TestActivity</string>
+    <string name="main">Main Activity</string>
+    <string name="move">MOVE</string>
+    <string name="return_sub">RETURN</string>
+    <string name="watch">Watch</string>
+    <string name="command">Command</string>
 </resources>

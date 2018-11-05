@@ -5,11 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#dfe"
+    android:background="#fee"
     tools:context=".MainActivity">
 
     <TextView
-        android:text="@string/main"
+        android:text="@string/watch"
         android:textSize="30sp"
         android:layout_margin="10dp"
         android:layout_width="wrap_content"
@@ -21,8 +21,8 @@
         app:layout_constraintVertical_bias="0.3"/>
 
     <Button
-        android:id="@+id/send_button"
-        android:text="@string/move"
+        android:id="@+id/return_button"
+        android:text="@string/return_sub"
         android:textSize="30sp"
         android:layout_margin="20dp"
         android:layout_width="wrap_content"
