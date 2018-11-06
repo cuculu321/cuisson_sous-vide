@@ -36,7 +36,7 @@ public class ConnectionAcitivity extends AppCompatActivity {
         Log.d("message",message);
 
         final MqttAndroidClient client =
-                new MqttAndroidClient(this.getApplicationContext(), "tcp://192.168.0.3:1883", clientId);
+                new MqttAndroidClient(this.getApplicationContext(), "tcp://"+ message +":1883", clientId);
         MqttConnectOptions options = new MqttConnectOptions();
         options.setUserName(USER_NAME);
         options.setPassword(USER_PASS.toCharArray());
