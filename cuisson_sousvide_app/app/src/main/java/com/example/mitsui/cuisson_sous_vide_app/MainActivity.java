@@ -3,11 +3,13 @@ package com.example.mitsui.cuisson_sous_vide_app;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
+    static final int RESULT_SUBACTIVITY = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +21,12 @@ public class MainActivity extends AppCompatActivity {
         connectdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplication(), CommandActivity.class);
-                startActivity(intent);
+
+                String device_address = AddressText.getText().toString();
+
+                Intent intent = new Intent(getApplication(), ConnectionAcitivity.class);
+                intent.putExtra("device_addr", device_address);
+                startActivityForResult(intent, RESULT_SUBACTIVITY);
             }
         });
 
@@ -31,6 +37,5 @@ public class MainActivity extends AppCompatActivity {
                 AddressText.getText().clear();
             }
         });
-
     }
 }
