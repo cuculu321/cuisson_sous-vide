@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 public class CommandActivity extends AppCompatActivity{
@@ -14,8 +15,11 @@ public class CommandActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_command);
 
-        Button returnButton = findViewById(R.id.return_button);
-        returnButton.setOnClickListener(new View.OnClickListener() {
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.temp_spinner);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        Button cookButton = findViewById(R.id.cook_button);
+        cookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplication(), WatchActivity.class);
