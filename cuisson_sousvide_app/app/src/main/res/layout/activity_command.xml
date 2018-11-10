@@ -52,6 +52,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.028" />
 
+    <Spinner
+        android:id="@+id/temp_spinner"
+        android:layout_width="246dp"
+        android:layout_height="22dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/temp_text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.143" />
+
     <TextView
         android:id="@+id/time_text"
         android:layout_width="wrap_content"
@@ -66,7 +80,7 @@
         app:layout_constraintVertical_bias="0.26" />
 
     <Spinner
-        android:id="@+id/temp_spinner"
+        android:id="@+id/time_spinner"
         android:layout_width="246dp"
         android:layout_height="22dp"
         android:layout_marginBottom="8dp"
@@ -79,18 +93,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.244" />
 
-    <Spinner
-        android:id="@+id/time_spinner"
-        android:layout_width="246dp"
-        android:layout_height="22dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/temp_text"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.143" />
 
 </android.support.constraint.ConstraintLayout>
