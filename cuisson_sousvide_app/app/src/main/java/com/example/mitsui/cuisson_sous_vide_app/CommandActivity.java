@@ -16,15 +16,27 @@ public class CommandActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_command);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        for(int i = 30; i < 100; i++){
-            adapter.add(String.valueOf(i));
-        }
-        Spinner temp_spinner = (Spinner) findViewById(R.id.temp_spinner);
 
-        // SpinnerにAdapterを設定
-        temp_spinner.setAdapter(adapter);
+        Spinner temp_spinner = (Spinner) findViewById(R.id.temp_spinner);
+        Spinner time_spinner = (Spinner) findViewById(R.id.time_spinner);
+
+        ArrayAdapter<String> temp_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        temp_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        ArrayAdapter<String> time_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        time_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        for(int i = 30; i < 100; i++){
+            temp_adapter.add(String.valueOf(i));
+        }
+
+        // temp_pinnerにAdapterを設定
+        temp_spinner.setAdapter(temp_adapter);
+
+        for(int i = 0; i < 300; i++){
+            time_adapter.add(String.valueOf(i));
+        }
+
+        time_spinner.setAdapter(time_adapter);
 
         Button cookButton = findViewById(R.id.cook_button);
         cookButton.setOnClickListener(new View.OnClickListener() {
