@@ -18,12 +18,14 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.UnsupportedEncodingException;
 
+import static com.example.mitsui.cuisson_sous_vide_app.MainActivity.RESULT_SUBACTIVITY;
+
 public class ConnectionAcitivity extends AppCompatActivity {
 
     String clientId = MqttClient.generateClientId();
     String USER_NAME = "kies";
     String USER_PASS = "wtpotnt";
-    private String message;
+    private String device_address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +34,11 @@ public class ConnectionAcitivity extends AppCompatActivity {
         setContentView(R.layout.activity_connection);
 
         Intent it = getIntent(); //インテントを受け取る
-        message = it.getStringExtra("device_addr");
-        Log.d("message",message);
+        device_address = it.getStringExtra("device_addr");
+        Log.d("message",device_address);
 
         final MqttAndroidClient client =
-                new MqttAndroidClient(this.getApplicationContext(), "tcp://"+ message +":1883", clientId);
+                new MqttAndroidClient(this.getApplicationContext(), "tcp://"+ device_address +":1883", clientId);
         MqttConnectOptions options = new MqttConnectOptions();
         options.setUserName(USER_NAME);
         options.setPassword(USER_PASS.toCharArray());
@@ -50,7 +52,8 @@ public class ConnectionAcitivity extends AppCompatActivity {
                     Log.d("success", "onSuccess");
                     Mqtt_Publish(client, "android/data", "hello android");
                     Intent intent = new Intent(getApplication(), CommandActivity.class);
-                    startActivity(intent);
+                    intent.putExtra("device_addr", device_address);
+                    startActivityForResult(intent, RESULT_SUBACTIVITY);
 
                 }
 
