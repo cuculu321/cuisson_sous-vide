@@ -39,7 +39,7 @@ public class WatchActivity extends AppCompatActivity {
 
         YAxis leftAxis = mChart.getAxisLeft();
         // Y軸最大最小設定
-        leftAxis.setAxisMaximum(150f);
+        leftAxis.setAxisMaximum(100f);
         leftAxis.setAxisMinimum(0f);
         // Grid横軸を破線
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
@@ -62,7 +62,7 @@ public class WatchActivity extends AppCompatActivity {
         // Entry()を使ってLineDataSetに設定できる形に変更してarrayを新しく作成
         int data[] = {116, 111, 112, 121, 102, 83,
                 99, 101, 74, 105, 120, 112,
-                109, 102, 107, 93, 82, 99, 110,
+                109, 102, 107, 93, 82, 99, 110,120,30,110,90
         };
 
         ArrayList<Entry> values = new ArrayList<>();
@@ -82,7 +82,7 @@ public class WatchActivity extends AppCompatActivity {
             mChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(values, "DataSet");
+            set1 = new LineDataSet(values, "Temp");
 
             set1.setDrawIcons(false);
             set1.setColor(Color.BLACK);
