@@ -60,8 +60,9 @@ public class WatchActivity extends AppCompatActivity {
 
                         if(action.equals("messageArrived")) //Subしたデータの取得
                         {
-                            addEntry();
                             Log.d("pub", destinationName + " " + parcel.toString());
+                            int temp = Integer.valueOf(parcel.toString());
+                            addEntry(temp);
                         }
                     }
                 };
@@ -176,7 +177,7 @@ public class WatchActivity extends AppCompatActivity {
         }
     }
 
-    private void addEntry() {
+    private void addEntry(int temp) {
 
         LineData data = mChart.getData();
 
@@ -190,7 +191,7 @@ public class WatchActivity extends AppCompatActivity {
                 data.addDataSet(set);
             }
 
-            data.addEntry(new Entry(set.getEntryCount(), (float) (Math.random() * 40) + 30f), 0);
+            data.addEntry(new Entry(set.getEntryCount(), (int) temp), 0);
             data.notifyDataChanged();
 
             // let the chart know it's data has changed
