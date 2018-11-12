@@ -77,7 +77,7 @@ public class WatchActivity extends AppCompatActivity {
                     Log.d("data", "onSuccess");
 
                     try {
-                        client.subscribe("#", 0);
+                        client.subscribe("micon/temp", 0);
                         Log.d("data", "subscribe");
                     } catch (MqttException e) {
                         Log.d("data", e.toString());
