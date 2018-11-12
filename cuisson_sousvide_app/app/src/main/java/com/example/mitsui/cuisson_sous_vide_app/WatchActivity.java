@@ -1,9 +1,12 @@
 package com.example.mitsui.cuisson_sous_vide_app;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -13,17 +16,82 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class WatchActivity extends AppCompatActivity {
 
     private LineChart mChart;
+    String clientId = MqttClient.generateClientId();
+    String USER_NAME = "kies";
+    String USER_PASS = "wtpotnt";
+    private String device_address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch);
 
+        Intent it = getIntent(); //インテントを受け取る
+        device_address = it.getStringExtra("device_addr");
+        Log.d("message",device_address);
+
+        //MQTTの接続
+        final MqttAndroidClient client =
+                new MqttAndroidClient(this.getApplicationContext(), "tcp://"+ device_address +":1883", clientId) {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        super.onReceive(context, intent);
+
+                        Bundle data = intent.getExtras();
+
+                        String action = data.getString("MqttService.callbackAction");
+                        Object parcel = data.get("MqttService.PARCEL");
+                        String destinationName = data.getString("MqttService.destinationName");
+
+                        if(action.equals("messageArrived")) //Subしたデータの取得
+                        {
+                            Log.d("pub", destinationName + " " + parcel.toString());
+                        }
+                    }
+                };
+        try {
+            MqttConnectOptions options = new MqttConnectOptions();
+            options.setUserName(USER_NAME);
+            options.setPassword(USER_PASS.toCharArray());
+
+            client.connect(options, null, new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken iMqttToken) {
+                    Log.d("data", "onSuccess");
+
+                    try {
+                        client.subscribe("#", 0);
+                        Log.d("data", "subscribe");
+                    } catch (MqttException e) {
+                        Log.d("data", e.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(IMqttToken iMqttToken, Throwable throwable) {
+                    Log.d("data", "onFailure");
+                }
+            });
+
+        } catch (MqttException e) {
+            Log.d("data", e.toString());
+        }
+
+        //****  折れ線グラフの設定　****
         mChart = findViewById(R.id.line_chart);
 
         // Grid背景色
@@ -106,6 +174,17 @@ public class WatchActivity extends AppCompatActivity {
 
             // set data
             mChart.setData(lineData);
+        }
+    }
+
+    public void Mqtt_Publish(MqttAndroidClient client, String topic, String payload){
+        byte[] encodedPayload = new byte[0];
+        try {
+            encodedPayload = payload.getBytes("UTF-8");
+            MqttMessage message = new MqttMessage(encodedPayload);
+            client.publish(topic, message);
+        } catch (UnsupportedEncodingException | MqttException e) {
+            e.printStackTrace();
         }
     }
 }
