@@ -15,6 +15,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -59,6 +60,7 @@ public class WatchActivity extends AppCompatActivity {
 
                         if(action.equals("messageArrived")) //Subしたデータの取得
                         {
+                            addEntry();
                             Log.d("pub", destinationName + " " + parcel.toString());
                         }
                     }
@@ -128,10 +130,7 @@ public class WatchActivity extends AppCompatActivity {
 
     private void setData() {
         // Entry()を使ってLineDataSetに設定できる形に変更してarrayを新しく作成
-        int data[] = {116, 111, 112, 121, 102, 83,
-                99, 101, 74, 105, 120, 112,
-                109, 102, 107, 93, 82, 99, 110,120,30,110,90
-        };
+        int data[] = {0};
 
         ArrayList<Entry> values = new ArrayList<>();
 
@@ -175,6 +174,56 @@ public class WatchActivity extends AppCompatActivity {
             // set data
             mChart.setData(lineData);
         }
+    }
+
+    private void addEntry() {
+
+        LineData data = mChart.getData();
+
+        if (data != null) {
+
+            ILineDataSet set = data.getDataSetByIndex(0);
+            // set.addEntry(...); // can be called as well
+
+            if (set == null) {
+                set = createSet();
+                data.addDataSet(set);
+            }
+
+            data.addEntry(new Entry(set.getEntryCount(), (float) (Math.random() * 40) + 30f), 0);
+            data.notifyDataChanged();
+
+            // let the chart know it's data has changed
+            mChart.notifyDataSetChanged();
+
+            // limit the number of visible entries
+            mChart.setVisibleXRangeMaximum(120);
+            // chart.setVisibleYRange(30, AxisDependency.LEFT);
+
+            // move to the latest entry
+            mChart.moveViewToX(data.getEntryCount());
+
+            // this automatically refreshes the chart (calls invalidate())
+            // chart.moveViewTo(data.getXValCount()-7, 55f,
+            // AxisDependency.LEFT);
+        }
+    }
+
+    private LineDataSet createSet() {
+
+        LineDataSet set = new LineDataSet(null, "Dynamic Data");
+        set.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set.setColor(ColorTemplate.getHoloBlue());
+        set.setCircleColor(Color.WHITE);
+        set.setLineWidth(2f);
+        set.setCircleRadius(4f);
+        set.setFillAlpha(65);
+        set.setFillColor(ColorTemplate.getHoloBlue());
+        set.setHighLightColor(Color.rgb(244, 117, 117));
+        set.setValueTextColor(Color.WHITE);
+        set.setValueTextSize(9f);
+        set.setDrawValues(false);
+        return set;
     }
 
     public void Mqtt_Publish(MqttAndroidClient client, String topic, String payload){
