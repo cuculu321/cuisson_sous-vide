@@ -7,6 +7,8 @@ import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -27,6 +29,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
+import static com.example.mitsui.cuisson_sous_vide_app.MainActivity.RESULT_SUBACTIVITY;
 
 public class WatchActivity extends AppCompatActivity {
 
@@ -127,6 +131,17 @@ public class WatchActivity extends AppCompatActivity {
 
         // dont forget to refresh the drawing
         // mChart.invalidate();
+
+        Button cookButton = findViewById(R.id.stop_button);
+        cookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Mqtt_Publish(client, "android/data", "stop");
+                Intent intent = new Intent(getApplication(), CommandActivity.class);
+                intent.putExtra("device_addr", device_address);
+                startActivityForResult(intent, RESULT_SUBACTIVITY);
+            }
+        });
     }
 
     private void setData() {
