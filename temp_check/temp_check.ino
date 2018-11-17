@@ -93,11 +93,21 @@ void callback(char* sub_topic, byte* payload, unsigned int length) {
     Serial.println(te_data);
     
   } else if((char)payload[0] == 't' && (char)payload[1] == 'i'){
-    char time_data10 = (char)payload[6];
-    int ti_data10 = ctoi(time_data10) * 10;
-    char time_data1 = (char)payload[7];
-    int ti_data = ctoi(time_data1) + ti_data10;
-    Serial.println(ti_data);
+    if((char)payload[8] == 'e'){
+      char time_data10 = (char)payload[6];
+      int ti_data10 = ctoi(time_data10) * 10;
+      char time_data1 = (char)payload[7];
+      int ti_data = ctoi(time_data1) + ti_data10;
+      Serial.println(ti_data);
+    }else{
+      char time_data100 = (char)payload[6];
+      int ti_data100 = ctoi(time_data100) * 100;
+      char time_data10 = (char)payload[7];
+      int ti_data10 = ctoi(time_data10) * 10;
+      char time_data = (char)payload[8];
+      int ti_data = ctoi(time_data) + ti_data10 + ti_data100;
+      Serial.println(ti_data);
+    }
   }
 }
 
