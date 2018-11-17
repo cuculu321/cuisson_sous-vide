@@ -112,10 +112,9 @@ void reconnect() {
   }
 }
 
-void temp_pub(){
+void mqtt_pub(char* pub_data){
   Serial.println("Publish");
-  itoa(send_temp, payload, 10);
-  mqttClient.publish(pub_topic, payload);
+  mqttClient.publish(pub_topic, pub_data);
 }
 
 void setup(void) {
@@ -162,7 +161,8 @@ void loop(void) {
     Serial.println(send_temp);
   }
 
-  temp_pub();
+  itoa(send_temp, payload, 10);
+  mqtt_pub(payload);
   
   if ( ! mqttClient.connected() ) {
     reconnect();
