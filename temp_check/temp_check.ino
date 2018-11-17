@@ -4,8 +4,8 @@
 #include <PubSubClient.h>
 
 // WiFi
-const char *ssid = "WARPSTAR-9C16EB-W";
-const char *passwd = "9A57BC522C952";
+const char *ssid = "";
+const char *passwd = "";
 
 // Pub/Sub
 const char* mqttHost = "192.168.0.8"; // MQTTのIPかホスト名
@@ -13,8 +13,10 @@ const int mqttPort = 1883;       // MQTTのポート
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
 
-const char* topic = "micon/temp";     // 送信先のトピック名
+const char* pub_topic = "micon/temp";     // 送信先のトピック名
 char payload[10];                   // 送信するデータ
+
+const char* sub_topic = "android/data"; //受信データのトピック名
 
 #define temp_pin 22 // データ(黄)で使用するポート番号
 #define SENSER_BIT 9      // 精度の設定bit
@@ -71,9 +73,9 @@ void setup_wifi() {
 }
 
 
-void callback(char* topic, byte* payload, unsigned int length) {
+void callback(char* sub_topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
-  Serial.print(topic);
+  Serial.print(sub_topic);
   Serial.print("] ");
   for (int i = 0; i < length; i++) {
     Serial.print((char)payload[i]);
@@ -99,7 +101,7 @@ void reconnect() {
     // Attempt to connect
     if (mqttClient.connect(clientId.c_str(), "kies", "wtpotnt")) {
       Serial.println("connected");
-      mqttClient.subscribe("#");
+      mqttClient.subscribe(sub_topic);
     } else {
       Serial.print("failed, rc=");
       Serial.print(mqttClient.state());
@@ -111,12 +113,13 @@ void reconnect() {
 }
 
 void temp_pub(){
+  Serial.println("Publish");
   itoa(send_temp, payload, 10);
-  mqttClient.publish(topic, payload);
+  mqttClient.publish(pub_topic, payload);
 }
 
 void setup(void) {
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   //温度センサー関係
   sensors.setResolution(SENSER_BIT);
@@ -160,6 +163,7 @@ void loop(void) {
   }
 
   temp_pub();
+  
   if ( ! mqttClient.connected() ) {
     reconnect();
   }
