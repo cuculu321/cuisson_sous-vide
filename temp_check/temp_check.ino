@@ -4,8 +4,8 @@
 #include <PubSubClient.h>
 
 // WiFi
-const char *ssid = "";
-const char *passwd = "";
+const char *ssid = "WARPSTAR-9C16EB-W";
+const char *passwd = "9A57BC522C952";
 
 // Pub/Sub
 const char* mqttHost = "192.168.0.8"; // MQTTのIPかホスト名
@@ -17,6 +17,8 @@ const char* pub_topic = "micon/temp";     // 送信先のトピック名
 char payload[10];                   // 送信するデータ
 
 const char* sub_topic = "android/data"; //受信データのトピック名
+
+unsigned long send_alarm = 60000;
 
 #define temp_pin 22 // データ(黄)で使用するポート番号
 #define SENSER_BIT 9      // 精度の設定bit
@@ -161,9 +163,12 @@ void loop(void) {
     Serial.println(send_temp);
   }
 
-  itoa(send_temp, payload, 10);
-  mqtt_pub(payload);
-  
+  if(millis()>=send_alarm){
+    send_alarm+=60000;
+    itoa(send_temp, payload, 10);
+    mqtt_pub(payload);
+  }
+    
   if ( ! mqttClient.connected() ) {
     reconnect();
   }
