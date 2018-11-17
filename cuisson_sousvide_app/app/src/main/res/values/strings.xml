@@ -13,4 +13,6 @@
     <string name="time">Time</string>
     <string name="temp">Temp</string>
     <string name="cook">Cook</string>
+
+    <string name="stop">Stop</string>
 </resources>

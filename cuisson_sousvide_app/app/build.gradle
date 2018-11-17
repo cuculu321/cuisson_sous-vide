@@ -28,6 +28,7 @@ dependencies {
     implementation('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
         exclude module: 'support-v4'
     }
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 
 repositories {

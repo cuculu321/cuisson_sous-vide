@@ -106,7 +106,8 @@ public class CommandActivity extends AppCompatActivity{
                 Mqtt_Publish(client, "android/data", "temp: " + temp);
                 Mqtt_Publish(client, "android/data", "time: " + time);
                 Intent intent = new Intent(getApplication(), WatchActivity.class);
-                startActivity(intent);
+                intent.putExtra("device_addr", device_address);
+                startActivityForResult(intent, RESULT_SUBACTIVITY);
             }
         });
     }
