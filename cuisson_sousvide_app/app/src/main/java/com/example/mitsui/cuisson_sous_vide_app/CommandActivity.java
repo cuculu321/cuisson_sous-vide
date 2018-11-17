@@ -103,8 +103,8 @@ public class CommandActivity extends AppCompatActivity{
                 String time = (String)time_spinner.getSelectedItem();
                 Log.d("temp", temp);
                 Log.d("time", time);
-                Mqtt_Publish(client, "android/data", "temp: " + temp);
-                Mqtt_Publish(client, "android/data", "time: " + time);
+                Mqtt_Publish(client, "android/data", "temp: " + temp + "e");
+                Mqtt_Publish(client, "android/data", "time: " + time + "e");
                 Intent intent = new Intent(getApplication(), WatchActivity.class);
                 intent.putExtra("device_addr", device_address);
                 startActivityForResult(intent, RESULT_SUBACTIVITY);
