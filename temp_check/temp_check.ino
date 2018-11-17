@@ -4,8 +4,8 @@
 #include <PubSubClient.h>
 
 // WiFi
-const char *ssid = "WARPSTAR-9C16EB-W";
-const char *passwd = "9A57BC522C952";
+const char *ssid = "";
+const char *passwd = "";
 
 // Pub/Sub
 const char* mqttHost = "192.168.0.8"; // MQTTのIPかホスト名
@@ -84,12 +84,20 @@ void callback(char* sub_topic, byte* payload, unsigned int length) {
   }
   Serial.println();
 
-  // Switch on the LED if an 1 was received as first character
-  if ((char)payload[0] == '1') {
-    digitalWrite(1, LOW); 
-    Serial.println("coming here");
-  } else {
-    digitalWrite(1, HIGH); 
+  // get temp
+  if ((char)payload[0] == 't' && (char)payload[1] == 'e') {
+    char temp_data10 = (char)payload[6];
+    int te_data10 = ctoi(temp_data10) * 10;
+    char temp_data1 = (char)payload[7];
+    int te_data = ctoi(temp_data1) + te_data10;
+    Serial.println(te_data);
+    
+  } else if((char)payload[0] == 't' && (char)payload[1] == 'i'){
+    char time_data10 = (char)payload[6];
+    int ti_data10 = ctoi(time_data10) * 10;
+    char time_data1 = (char)payload[7];
+    int ti_data = ctoi(time_data1) + ti_data10;
+    Serial.println(ti_data);
   }
 }
 
@@ -206,5 +214,12 @@ int power(){
     return 0;
   }
   return power;
+}
+
+int ctoi(char c) {
+  if (c >= '0' && c <= '9') {
+    return c - '0';
+  }
+  return 0;
 }
 
