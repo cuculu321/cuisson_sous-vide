@@ -9,9 +9,8 @@
 */
 int micon_mode = 0;
 // WiFi
-const char *ssid = "WARPSTAR-9C16EB-W";
-const char *passwd = "9A57BC522C952";
-
+const char *ssid = "";
+const char *passwd = "";
 // Pub/Sub
 const char* mqttHost = "192.168.0.8"; // MQTTのIPかホスト名
 const int mqttPort = 1883;       // MQTTのポート
@@ -50,7 +49,7 @@ float send_temp = 0; //送信データに使用する変数
 int read_count = 0;
 int target = 70;
 int end_min = 30;
-int now_min = 0;
+int now_min = 1;
 int ti_data;
 
 //PI制御関係
@@ -119,7 +118,7 @@ void callback(char* sub_topic, byte* payload, unsigned int length) {
       Serial.println(ti_data);
     }
 
-    end_min = ti_data;
+    end_min = 3;
     micon_mode = 1;
   } else if((char)payload[0] == 's' && (char)payload[1] == 't'){
     Serial.println("STOP!!!");
@@ -212,6 +211,11 @@ void Heat(){
     itoa(send_temp, payload, 10);
     mqtt_pub(payload);
     now_min++;
+    if(now_min == end_min){
+      micon_mode = 0;
+      now_min = 0;
+      Serial.println("COOK END");
+    }
   }
 }
 
