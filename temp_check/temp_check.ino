@@ -3,9 +3,14 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
+/*マイコンの状態
+  0 - 動作
+  1 - 非動作
+*/
+int micon_mode = 0;
 // WiFi
-const char *ssid = "";
-const char *passwd = "";
+const char *ssid = "WARPSTAR-9C16EB-W";
+const char *passwd = "9A57BC522C952";
 
 // Pub/Sub
 const char* mqttHost = "192.168.0.8"; // MQTTのIPかホスト名
@@ -44,6 +49,9 @@ float temp_box[STACK_NUM] = {0};
 float send_temp = 0; //送信データに使用する変数
 int read_count = 0;
 int target = 70;
+int end_min = 30;
+int now_min = 0;
+int ti_data;
 
 //PI制御関係
 float duty = 0;
@@ -91,7 +99,9 @@ void callback(char* sub_topic, byte* payload, unsigned int length) {
     char temp_data1 = (char)payload[7];
     int te_data = ctoi(temp_data1) + te_data10;
     Serial.println(te_data);
-    
+    target = te_data;
+
+    //get time
   } else if((char)payload[0] == 't' && (char)payload[1] == 'i'){
     if((char)payload[8] == 'e'){
       char time_data10 = (char)payload[6];
@@ -108,6 +118,12 @@ void callback(char* sub_topic, byte* payload, unsigned int length) {
       int ti_data = ctoi(time_data) + ti_data10 + ti_data100;
       Serial.println(ti_data);
     }
+
+    end_min = ti_data;
+    micon_mode = 1;
+  } else if((char)payload[0] == 's' && (char)payload[1] == 't'){
+    Serial.println("STOP!!!");
+    micon_mode = 0;
   }
 }
 
@@ -154,6 +170,16 @@ void setup(void) {
 }
   
 void loop(void) {
+  if(micon_mode){
+    Heat();
+  }
+  if ( ! mqttClient.connected() ) {
+    reconnect();
+  }
+  mqttClient.loop();
+}
+
+void Heat(){
   pwm = power();
   ledcWrite(LEDC_CHANNEL_0, pwm);
   Serial.print("pwm: ");
@@ -185,12 +211,8 @@ void loop(void) {
     send_alarm+=60000;
     itoa(send_temp, payload, 10);
     mqtt_pub(payload);
+    now_min++;
   }
-    
-  if ( ! mqttClient.connected() ) {
-    reconnect();
-  }
-  mqttClient.loop();
 }
 
 float p(){
