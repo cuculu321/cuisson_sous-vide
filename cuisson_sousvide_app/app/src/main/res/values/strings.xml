@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">SousCooker</string>
+
+    <string name="main">Main Activity</string>
+    <string name="move">MOVE</string>
+    <string name="return_sub">RETURN</string>
+    <string name="watch">Watch</string>
+    <string name="command">Command</string>
+    <string name="clear">Clear</string>
+    <string name="connection">Connection</string>
+    <string name="connecting">Connection...</string>
+
+    <string name="time">Time</string>
+    <string name="temp">Temp</string>
+    <string name="cook">Cook</string>
+
+    <string name="stop">Stop</string>
+</resources>
