@@ -118,7 +118,7 @@ void callback(char* sub_topic, byte* payload, unsigned int length) {
       Serial.println(ti_data);
     }
 
-    end_min = 3;
+    end_min = ti_data;
     micon_mode = 1;
   } else if((char)payload[0] == 's' && (char)payload[1] == 't'){
     Serial.println("STOP!!!");
