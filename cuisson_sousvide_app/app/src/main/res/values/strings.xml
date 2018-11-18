@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TestActivity</string>
+    <string name="app_name">SousCooker</string>
 
     <string name="main">Main Activity</string>
     <string name="move">MOVE</string>
