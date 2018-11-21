@@ -123,6 +123,7 @@ void callback(char* sub_topic, byte* payload, unsigned int length) {
   } else if((char)payload[0] == 's' && (char)payload[1] == 't'){
     Serial.println("STOP!!!");
     micon_mode = 0;
+    ledcWrite(LEDC_CHANNEL_0, 0); //出力を0にして終わる
   }
 }
 
@@ -214,7 +215,9 @@ void Heat(){
     if(now_min == end_min){
       micon_mode = 0;
       now_min = 0;
-      Serial.println("COOK END");
+      
+      ledcWrite(LEDC_CHANNEL_0, 0); //出力を0にして終わる
+      mqtt_pub("COOK_END");
     }
   }
 }
