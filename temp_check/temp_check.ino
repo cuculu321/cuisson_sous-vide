@@ -31,7 +31,7 @@ unsigned long send_alarm = 60000;
 #define STACK_NUM 7
 
 #define Kp 2.7
-#define Ki 0.01
+#define Ki 0.02
 
 #define LEDC_CHANNEL_0 0
 #define LEDC_TIMER_8_BIT 8
