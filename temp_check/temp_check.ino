@@ -246,7 +246,7 @@ float i(){
 }
 
 int power(){
-  int power = duty * 100 / 2 + 10;
+  int power = duty * 100 / 2;
   if(power > 255){
     return 255;
   }else if(power < 0){
