@@ -106,7 +106,7 @@ void callback(char* sub_topic, byte* payload, unsigned int length) {
       char time_data10 = (char)payload[6];
       int ti_data10 = ctoi(time_data10) * 10;
       char time_data1 = (char)payload[7];
-      int ti_data = ctoi(time_data1) + ti_data10;
+      ti_data = ctoi(time_data1) + ti_data10;
       Serial.println(ti_data);
     }else{
       char time_data100 = (char)payload[6];
@@ -114,7 +114,7 @@ void callback(char* sub_topic, byte* payload, unsigned int length) {
       char time_data10 = (char)payload[7];
       int ti_data10 = ctoi(time_data10) * 10;
       char time_data = (char)payload[8];
-      int ti_data = ctoi(time_data) + ti_data10 + ti_data100;
+      ti_data = ctoi(time_data) + ti_data10 + ti_data100;
       Serial.println(ti_data);
     }
 
