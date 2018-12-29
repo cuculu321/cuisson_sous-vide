@@ -31,7 +31,7 @@ unsigned long send_alarm = 60000;
 #define STACK_NUM 7
 
 #define Kp 2.7
-#define Ki 0.01
+#define Ki 0.02
 
 #define LEDC_CHANNEL_0 0
 #define LEDC_TIMER_8_BIT 8
@@ -106,7 +106,7 @@ void callback(char* sub_topic, byte* payload, unsigned int length) {
       char time_data10 = (char)payload[6];
       int ti_data10 = ctoi(time_data10) * 10;
       char time_data1 = (char)payload[7];
-      int ti_data = ctoi(time_data1) + ti_data10;
+      ti_data = ctoi(time_data1) + ti_data10;
       Serial.println(ti_data);
     }else{
       char time_data100 = (char)payload[6];
@@ -114,7 +114,7 @@ void callback(char* sub_topic, byte* payload, unsigned int length) {
       char time_data10 = (char)payload[7];
       int ti_data10 = ctoi(time_data10) * 10;
       char time_data = (char)payload[8];
-      int ti_data = ctoi(time_data) + ti_data10 + ti_data100;
+      ti_data = ctoi(time_data) + ti_data10 + ti_data100;
       Serial.println(ti_data);
     }
 
@@ -123,6 +123,7 @@ void callback(char* sub_topic, byte* payload, unsigned int length) {
   } else if((char)payload[0] == 's' && (char)payload[1] == 't'){
     Serial.println("STOP!!!");
     micon_mode = 0;
+    ledcWrite(LEDC_CHANNEL_0, 0); //出力を0にして終わる
   }
 }
 
@@ -214,7 +215,9 @@ void Heat(){
     if(now_min == end_min){
       micon_mode = 0;
       now_min = 0;
-      Serial.println("COOK END");
+      
+      ledcWrite(LEDC_CHANNEL_0, 0); //出力を0にして終わる
+      mqtt_pub("COOK_END");
     }
   }
 }
@@ -243,7 +246,7 @@ float i(){
 }
 
 int power(){
-  int power = duty * 100 / 2 + 10;
+  int power = duty * 100 / 2;
   if(power > 255){
     return 255;
   }else if(power < 0){
